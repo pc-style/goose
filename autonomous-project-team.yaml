@@ -1,0 +1,276 @@
+version: "1.0.0"
+title: "Autonomous Project Team - Main Orchestrator"
+description: "Meta-orchestrator that analyzes project goals and coordinates specialized subagents to autonomously design, develop, and execute projects to completion"
+
+instructions: |
+  You are the Meta-Orchestrator of an Autonomous Project Team system. Your role is to:
+  
+  1. ANALYZE the project goal thoroughly to understand requirements, scope, and complexity
+  2. DETERMINE the optimal team composition of specialized subagents needed
+  3. DESIGN the workflow and execution strategy (sequential vs parallel execution)
+  4. COORDINATE subagent execution and aggregate their outputs
+  5. ENSURE project completion by validating all deliverables
+  
+  Available Specialized Subagents:
+  - project_researcher: Analyzes requirements, researches technologies, creates project specifications
+  - task_manager: Breaks down projects into tasks, creates roadmaps, manages dependencies
+  - code_developer: Implements code solutions, handles development tasks
+  - code_reviewer: Reviews code quality, security, and best practices
+  - documentation_writer: Creates comprehensive documentation, READMEs, and guides
+  - qa_specialist: Tests functionality, validates requirements, ensures quality
+  - deployment_specialist: Handles deployment, CI/CD, and production setup
+  
+  EXECUTION STRATEGY:
+  1. Always start with project_researcher to understand the project deeply
+  2. Use task_manager to create structured execution plan
+  3. Coordinate development team (developer, reviewer) for implementation
+  4. Use documentation_writer and qa_specialist to ensure completeness
+  5. Deploy with deployment_specialist if needed
+  
+  WORKFLOW DECISION RULES:
+  - Use SEQUENTIAL execution when tasks have dependencies
+  - Use PARALLEL execution when tasks are independent
+  - Always validate outputs before proceeding to next phase
+  - Aggregate and synthesize results from all subagents
+
+parameters:
+  - key: project_goal
+    input_type: string
+    requirement: required
+    description: "High-level project goal or description (can be from text or markdown file)"
+  
+  - key: project_source
+    input_type: string
+    requirement: optional
+    default: "text"
+    description: "Source type: 'text' for direct input, 'file' for markdown file path"
+  
+  - key: execution_mode
+    input_type: string
+    requirement: optional
+    default: "auto"
+    description: "Execution mode: 'auto' for intelligent decisions, 'sequential', or 'parallel'"
+  
+  - key: team_size
+    input_type: string
+    requirement: optional
+    default: "optimal"
+    description: "Team size preference: 'minimal', 'optimal', or 'comprehensive'"
+  
+  - key: project_complexity
+    input_type: string
+    requirement: optional
+    default: "auto-detect"
+    description: "Project complexity: 'simple', 'medium', 'complex', or 'auto-detect'"
+  
+  - key: output_directory
+    input_type: string
+    requirement: optional
+    default: "./autonomous-project-output"
+    description: "Directory to store all project outputs and deliverables"
+
+sub_recipes:
+  - name: "project_researcher"
+    path: "./subagents/project-researcher.yaml"
+    values:
+      analysis_depth: "comprehensive"
+      research_scope: "full"
+  
+  - name: "task_manager"
+    path: "./subagents/task-manager.yaml"
+    values:
+      planning_style: "agile"
+      dependency_tracking: "enabled"
+  
+  - name: "code_developer"
+    path: "./subagents/code-developer.yaml"
+    values:
+      coding_style: "best-practices"
+      testing_included: "true"
+  
+  - name: "code_reviewer"
+    path: "./subagents/code-reviewer.yaml"
+    values:
+      review_depth: "thorough"
+      security_focus: "high"
+  
+  - name: "documentation_writer"
+    path: "./subagents/documentation-writer.yaml"
+    values:
+      documentation_style: "comprehensive"
+      include_examples: "true"
+  
+  - name: "qa_specialist"
+    path: "./subagents/qa-specialist.yaml"
+    values:
+      testing_approach: "comprehensive"
+      validation_level: "strict"
+  
+  - name: "deployment_specialist"
+    path: "./subagents/deployment-specialist.yaml"
+    values:
+      deployment_target: "production-ready"
+      ci_cd_setup: "included"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 600
+    bundled: true
+  
+  - type: builtin
+    name: memory
+    timeout: 300
+    bundled: true
+  
+  - type: command
+    name: web_search
+    command: "uvx mcp-server-fetch"
+    timeout: 300
+  
+  - type: command
+    name: tavily_search
+    command: "npx -y tavily-mcp"
+    timeout: 300
+    env_keys:
+      - TAVILY_API_KEY
+  
+  - type: remote
+    name: github
+    url: "https://api.githubcopilot.com/mcp/"
+    timeout: 300
+    env_keys:
+      - GITHUB_PERSONAL_ACCESS_TOKEN
+
+response:
+  json_schema:
+    type: object
+    properties:
+      project_analysis:
+        type: object
+        properties:
+          project_type:
+            type: string
+            description: "Identified project type (web app, CLI tool, library, etc.)"
+          complexity_level:
+            type: string
+            description: "Assessed complexity level (simple, medium, complex)"
+          technologies_identified:
+            type: array
+            items:
+              type: string
+            description: "List of technologies and frameworks identified"
+          estimated_duration:
+            type: string
+            description: "Estimated project completion time"
+        required: ["project_type", "complexity_level", "technologies_identified", "estimated_duration"]
+      
+      team_composition:
+        type: object
+        properties:
+          selected_subagents:
+            type: array
+            items:
+              type: string
+            description: "List of subagents selected for this project"
+          execution_strategy:
+            type: string
+            description: "Chosen execution strategy (sequential, parallel, hybrid)"
+          workflow_phases:
+            type: array
+            items:
+              type: object
+              properties:
+                phase_name:
+                  type: string
+                subagents:
+                  type: array
+                  items:
+                    type: string
+                execution_type:
+                  type: string
+              required: ["phase_name", "subagents", "execution_type"]
+            description: "Detailed workflow phases and subagent assignments"
+        required: ["selected_subagents", "execution_strategy", "workflow_phases"]
+      
+      execution_results:
+        type: object
+        properties:
+          completed_phases:
+            type: array
+            items:
+              type: string
+            description: "List of completed workflow phases"
+          deliverables_created:
+            type: array
+            items:
+              type: string
+            description: "List of all deliverables and outputs created"
+          quality_metrics:
+            type: object
+            properties:
+              code_quality_score:
+                type: number
+              documentation_completeness:
+                type: number
+              test_coverage:
+                type: number
+            description: "Quality metrics from QA validation"
+          final_status:
+            type: string
+            description: "Overall project completion status"
+        required: ["completed_phases", "deliverables_created", "final_status"]
+      
+      project_summary:
+        type: string
+        description: "Comprehensive summary of the autonomous project execution"
+    
+    required: ["project_analysis", "team_composition", "execution_results", "project_summary"]
+
+prompt: |
+  I need you to autonomously execute this project using the specialized subagent team:
+  
+  PROJECT GOAL: {{ project_goal }}
+  {% if project_source == "file" %}
+  (Load project details from file: {{ project_goal }})
+  {% endif %}
+  
+  EXECUTION PARAMETERS:
+  - Execution Mode: {{ execution_mode }}
+  - Team Size Preference: {{ team_size }}
+  - Complexity Level: {{ project_complexity }}
+  - Output Directory: {{ output_directory }}
+  
+  EXECUTION PHASES:
+  
+  PHASE 1: PROJECT ANALYSIS & RESEARCH
+  - Use project_researcher to analyze the project goal thoroughly
+  - Research technologies, frameworks, and best practices
+  - Create detailed project specification and requirements
+  
+  PHASE 2: PROJECT PLANNING & TASK BREAKDOWN
+  - Use task_manager to break down the project into manageable tasks
+  - Create execution roadmap with dependencies
+  - Estimate timelines and resource requirements
+  
+  PHASE 3: DEVELOPMENT EXECUTION
+  - Use code_developer to implement the solution
+  - Coordinate with code_reviewer for quality assurance
+  - Ensure best practices and security standards
+  
+  PHASE 4: DOCUMENTATION & TESTING
+  - Use documentation_writer to create comprehensive documentation
+  - Use qa_specialist to validate functionality and requirements
+  - Ensure all deliverables meet quality standards
+  
+  PHASE 5: DEPLOYMENT & FINALIZATION (if applicable)
+  - Use deployment_specialist for production setup
+  - Finalize all deliverables and create project summary
+  
+  Execute this project autonomously, making intelligent decisions about:
+  - Which subagents to use based on project requirements
+  - Whether to run subagents sequentially or in parallel
+  - How to aggregate and synthesize outputs from different subagents
+  - When the project is complete and all requirements are satisfied
+  
+  Create all outputs in the specified output directory and provide a comprehensive project summary.
