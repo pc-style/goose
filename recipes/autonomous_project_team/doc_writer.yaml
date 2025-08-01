@@ -1,0 +1,26 @@
+version: 1.0.0
+title: Documentation Writer Agent
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Produces user, developer, and API documentation.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: web_search
+    display_name: Web Search
+    timeout: 300
+    bundled: true
+parameters:
+  - key: doc_goal
+    input_type: string
+    requirement: required
+    description: Documentation scope or target path
+    default: ""
+prompt: |
+  You are a Documentation Writer Agent. Produce clear, comprehensive docs for {{ doc_goal }} including setup, usage, API reference, examples, FAQ.

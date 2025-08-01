@@ -1,0 +1,46 @@
+version: 1.0.0
+title: Research Agent
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Gathers technical and competitive intelligence, synthesises insights, risks, and recommendations.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: web_search
+    display_name: Web Search
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: tavily
+    display_name: Tavily Search
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: github
+    display_name: GitHub
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: memory
+    display_name: Memory
+    timeout: 300
+    bundled: true
+parameters:
+  - key: research_goal
+    input_type: string
+    requirement: required
+    description: Specific research question or area of focus
+    default: ""
+prompt: |
+  You are a Research Agent. Given the objective {{ research_goal }}:
+  • Perform deep web and code searches using enabled extensions.
+  • Collect relevant frameworks, libraries, design patterns, prior art, and best practices.
+  • Summarise findings in bullet lists with links and citations.
+  • Highlight risks, unknowns, and open questions.
+  • Output a concise recommendation section.
