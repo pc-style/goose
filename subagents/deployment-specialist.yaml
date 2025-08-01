@@ -1,0 +1,340 @@
+version: "1.0.0"
+title: "Deployment Specialist"
+description: "Specialized subagent for handling deployment, CI/CD pipeline setup, and production environment configuration"
+
+instructions: |
+  You are a Senior DevOps Engineer with expertise in:
+  
+  - Deployment automation and CI/CD pipeline design
+  - Cloud infrastructure and containerization
+  - Production environment setup and configuration
+  - Monitoring, logging, and observability
+  - Security hardening and compliance
+  - Scalability and high availability architecture
+  
+  Your responsibilities:
+  1. DESIGN and implement deployment strategies
+  2. CREATE CI/CD pipelines for automated deployment
+  3. CONFIGURE production environments and infrastructure
+  4. IMPLEMENT monitoring, logging, and alerting
+  5. ENSURE security and compliance requirements
+  6. OPTIMIZE for scalability and performance
+  
+  Deployment Process:
+  1. Analyze application architecture and requirements
+  2. Design deployment strategy and infrastructure
+  3. Create automated deployment pipelines
+  4. Configure production environments
+  5. Implement monitoring and observability
+  6. Set up security and backup procedures
+  7. Document deployment and maintenance procedures
+
+parameters:
+  - key: project_location
+    input_type: string
+    requirement: required
+    description: "Path to project files and code to deploy"
+  
+  - key: deployment_target
+    input_type: string
+    requirement: optional
+    default: "production-ready"
+    description: "Deployment target: 'development', 'staging', 'production-ready', or 'enterprise'"
+  
+  - key: ci_cd_setup
+    input_type: string
+    requirement: optional
+    default: "included"
+    description: "CI/CD setup: 'included', 'basic', or 'none'"
+  
+  - key: infrastructure_type
+    input_type: string
+    requirement: optional
+    default: "cloud"
+    description: "Infrastructure type: 'cloud', 'on-premise', 'hybrid', or 'containerized'"
+  
+  - key: scalability_requirements
+    input_type: string
+    requirement: optional
+    default: "moderate"
+    description: "Scalability requirements: 'basic', 'moderate', 'high', or 'enterprise'"
+  
+  - key: monitoring_level
+    input_type: string
+    requirement: optional
+    default: "comprehensive"
+    description: "Monitoring level: 'basic', 'standard', or 'comprehensive'"
+  
+  - key: security_level
+    input_type: string
+    requirement: optional
+    default: "high"
+    description: "Security level: 'basic', 'standard', or 'high'"
+  
+  - key: output_directory
+    input_type: string
+    requirement: optional
+    default: "./deployment-output"
+    description: "Directory to store deployment configurations and scripts"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 600
+    bundled: true
+  
+  - type: builtin
+    name: memory
+    timeout: 300
+    bundled: true
+
+response:
+  json_schema:
+    type: object
+    properties:
+      deployment_strategy:
+        type: object
+        properties:
+          deployment_type:
+            type: string
+            description: "Type of deployment strategy (blue-green, rolling, canary, etc.)"
+          infrastructure_design:
+            type: string
+            description: "Infrastructure architecture and design"
+          technology_stack:
+            type: array
+            items:
+              type: string
+            description: "Technologies and tools used for deployment"
+          scalability_approach:
+            type: string
+            description: "Approach to handle scalability requirements"
+        required: ["deployment_type", "infrastructure_design", "technology_stack", "scalability_approach"]
+      
+      ci_cd_pipeline:
+        type: object
+        properties:
+          pipeline_stages:
+            type: array
+            items:
+              type: object
+              properties:
+                stage_name:
+                  type: string
+                description:
+                  type: string
+                tools:
+                  type: array
+                  items:
+                    type: string
+              required: ["stage_name", "description", "tools"]
+            description: "CI/CD pipeline stages and configurations"
+          automation_level:
+            type: string
+            description: "Level of automation achieved"
+          deployment_triggers:
+            type: array
+            items:
+              type: string
+            description: "Triggers for automated deployment"
+        required: ["pipeline_stages", "automation_level", "deployment_triggers"]
+      
+      infrastructure_configuration:
+        type: object
+        properties:
+          environment_setup:
+            type: array
+            items:
+              type: object
+              properties:
+                environment:
+                  type: string
+                configuration:
+                  type: string
+                resources:
+                  type: array
+                  items:
+                    type: string
+              required: ["environment", "configuration", "resources"]
+            description: "Environment configurations"
+          security_measures:
+            type: array
+            items:
+              type: string
+            description: "Security measures implemented"
+          backup_strategy:
+            type: string
+            description: "Backup and disaster recovery strategy"
+          monitoring_setup:
+            type: array
+            items:
+              type: string
+            description: "Monitoring and alerting configurations"
+        required: ["environment_setup", "security_measures", "backup_strategy", "monitoring_setup"]
+      
+      deployment_artifacts:
+        type: object
+        properties:
+          configuration_files:
+            type: array
+            items:
+              type: object
+              properties:
+                file_name:
+                  type: string
+                purpose:
+                  type: string
+                location:
+                  type: string
+              required: ["file_name", "purpose", "location"]
+            description: "Deployment configuration files created"
+          scripts:
+            type: array
+            items:
+              type: object
+              properties:
+                script_name:
+                  type: string
+                purpose:
+                  type: string
+                language:
+                  type: string
+              required: ["script_name", "purpose", "language"]
+            description: "Deployment and automation scripts"
+          documentation:
+            type: array
+            items:
+              type: string
+            description: "Deployment documentation and runbooks"
+        required: ["configuration_files", "scripts", "documentation"]
+      
+      operational_readiness:
+        type: object
+        properties:
+          health_checks:
+            type: array
+            items:
+              type: string
+            description: "Health check endpoints and validations"
+          performance_metrics:
+            type: array
+            items:
+              type: string
+            description: "Performance metrics and KPIs to monitor"
+          alerting_rules:
+            type: array
+            items:
+              type: string
+            description: "Alerting rules and thresholds"
+          maintenance_procedures:
+            type: array
+            items:
+              type: string
+            description: "Maintenance and troubleshooting procedures"
+        required: ["health_checks", "performance_metrics", "alerting_rules", "maintenance_procedures"]
+      
+      deployment_summary:
+        type: string
+        description: "Summary of deployment setup and production readiness"
+    
+    required: ["deployment_strategy", "ci_cd_pipeline", "infrastructure_configuration", "deployment_artifacts", "operational_readiness", "deployment_summary"]
+
+prompt: |
+  Design and implement a comprehensive deployment solution for the following project:
+  
+  PROJECT LOCATION: {{ project_location }}
+  
+  DEPLOYMENT PARAMETERS:
+  - Deployment Target: {{ deployment_target }}
+  - CI/CD Setup: {{ ci_cd_setup }}
+  - Infrastructure Type: {{ infrastructure_type }}
+  - Scalability Requirements: {{ scalability_requirements }}
+  - Monitoring Level: {{ monitoring_level }}
+  - Security Level: {{ security_level }}
+  - Output Directory: {{ output_directory }}
+  
+  DEPLOYMENT REQUIREMENTS:
+  
+  1. DEPLOYMENT STRATEGY:
+     - Design appropriate deployment strategy (blue-green, rolling, canary)
+     - Plan infrastructure architecture and resource requirements
+     - Define environment configurations (dev, staging, production)
+     - Design for scalability and high availability
+     - Plan rollback and disaster recovery procedures
+  
+  2. CI/CD PIPELINE:
+     {% if ci_cd_setup == "included" %}
+     - Create automated build and test pipeline
+     - Implement automated deployment workflows
+     - Set up code quality gates and security scans
+     - Configure deployment approvals and gates
+     - Implement automated rollback mechanisms
+     {% endif %}
+  
+  3. INFRASTRUCTURE SETUP:
+     {% if infrastructure_type == "cloud" %}
+     - Configure cloud infrastructure (AWS, Azure, GCP)
+     - Set up auto-scaling and load balancing
+     - Implement container orchestration if needed
+     - Configure networking and security groups
+     {% elif infrastructure_type == "containerized" %}
+     - Create Docker containers and configurations
+     - Set up Kubernetes or container orchestration
+     - Configure service discovery and networking
+     - Implement container security and scanning
+     {% endif %}
+  
+  4. SECURITY CONFIGURATION:
+     {% if security_level == "high" %}
+     - Implement security hardening and compliance
+     - Configure SSL/TLS and certificate management
+     - Set up access controls and authentication
+     - Implement secrets management and encryption
+     - Configure security monitoring and alerting
+     {% endif %}
+  
+  5. MONITORING & OBSERVABILITY:
+     {% if monitoring_level == "comprehensive" %}
+     - Set up application and infrastructure monitoring
+     - Configure logging aggregation and analysis
+     - Implement distributed tracing and APM
+     - Create dashboards and visualizations
+     - Set up alerting and notification systems
+     {% endif %}
+  
+  6. BACKUP & DISASTER RECOVERY:
+     - Implement automated backup procedures
+     - Configure data replication and redundancy
+     - Create disaster recovery runbooks
+     - Test backup and restore procedures
+     - Document recovery time and point objectives
+  
+  7. PERFORMANCE OPTIMIZATION:
+     - Configure caching and CDN if applicable
+     - Optimize database connections and queries
+     - Implement performance monitoring
+     - Set up auto-scaling policies
+     - Configure resource limits and quotas
+  
+  8. OPERATIONAL PROCEDURES:
+     - Create deployment runbooks and procedures
+     - Document troubleshooting and maintenance guides
+     - Set up health checks and readiness probes
+     - Create operational dashboards and reports
+     - Define SLAs and performance targets
+  
+  DEPLOYMENT DELIVERABLES:
+  Create comprehensive deployment artifacts in the specified directory including:
+  - Infrastructure as Code (IaC) configurations
+  - CI/CD pipeline definitions and scripts
+  - Environment configuration files
+  - Deployment and automation scripts
+  - Monitoring and alerting configurations
+  - Documentation and operational runbooks
+  
+  Focus on creating a deployment solution that is:
+  - Automated and repeatable
+  - Secure and compliant
+  - Scalable and performant
+  - Observable and maintainable
+  - Production-ready and reliable

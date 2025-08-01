@@ -1,0 +1,268 @@
+version: "1.0.0"
+title: "Documentation Writer"
+description: "Specialized subagent for creating comprehensive documentation, READMEs, user guides, and technical specifications"
+
+instructions: |
+  You are a Senior Technical Writer with expertise in:
+  
+  - Technical documentation and user guide creation
+  - API documentation and reference materials
+  - Tutorial and example development
+  - Information architecture and content organization
+  - Multi-format documentation (Markdown, HTML, PDF)
+  - Developer experience and usability optimization
+  
+  Your responsibilities:
+  1. CREATE comprehensive project documentation
+  2. WRITE clear, user-friendly README files
+  3. DEVELOP API documentation and reference guides
+  4. PRODUCE tutorials and getting-started guides
+  5. ORGANIZE information for optimal user experience
+  6. ENSURE documentation accuracy and completeness
+  
+  Documentation Process:
+  1. Analyze project structure and functionality
+  2. Identify target audiences and their needs
+  3. Create information architecture and content outline
+  4. Write clear, concise, and accurate documentation
+  5. Include practical examples and use cases
+  6. Organize content for easy navigation and discovery
+  7. Review and validate documentation accuracy
+
+parameters:
+  - key: project_location
+    input_type: string
+    requirement: required
+    description: "Path to project files and code to document"
+  
+  - key: documentation_style
+    input_type: string
+    requirement: optional
+    default: "comprehensive"
+    description: "Documentation style: 'minimal', 'standard', or 'comprehensive'"
+  
+  - key: include_examples
+    input_type: string
+    requirement: optional
+    default: "true"
+    description: "Include code examples: 'true' or 'false'"
+  
+  - key: target_audience
+    input_type: string
+    requirement: optional
+    default: "developers"
+    description: "Target audience: 'developers', 'end-users', 'mixed', or 'technical'"
+  
+  - key: documentation_format
+    input_type: string
+    requirement: optional
+    default: "markdown"
+    description: "Primary format: 'markdown', 'html', 'rst', or 'mixed'"
+  
+  - key: include_api_docs
+    input_type: string
+    requirement: optional
+    default: "auto-detect"
+    description: "Include API documentation: 'true', 'false', or 'auto-detect'"
+  
+  - key: tutorial_level
+    input_type: string
+    requirement: optional
+    default: "beginner-friendly"
+    description: "Tutorial complexity: 'basic', 'beginner-friendly', 'intermediate', or 'advanced'"
+  
+  - key: output_directory
+    input_type: string
+    requirement: optional
+    default: "./documentation-output"
+    description: "Directory to store documentation outputs"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 600
+    bundled: true
+  
+  - type: builtin
+    name: memory
+    timeout: 300
+    bundled: true
+
+response:
+  json_schema:
+    type: object
+    properties:
+      documentation_structure:
+        type: object
+        properties:
+          main_documents:
+            type: array
+            items:
+              type: object
+              properties:
+                document_name:
+                  type: string
+                file_path:
+                  type: string
+                purpose:
+                  type: string
+                target_audience:
+                  type: string
+              required: ["document_name", "file_path", "purpose", "target_audience"]
+            description: "Main documentation files created"
+          supporting_documents:
+            type: array
+            items:
+              type: object
+              properties:
+                document_name:
+                  type: string
+                file_path:
+                  type: string
+                purpose:
+                  type: string
+              required: ["document_name", "file_path", "purpose"]
+            description: "Supporting documentation files"
+          content_organization:
+            type: string
+            description: "Overview of how content is organized and structured"
+        required: ["main_documents", "supporting_documents", "content_organization"]
+      
+      content_coverage:
+        type: object
+        properties:
+          installation_guide:
+            type: boolean
+            description: "Installation/setup guide included"
+          getting_started:
+            type: boolean
+            description: "Getting started tutorial included"
+          api_reference:
+            type: boolean
+            description: "API reference documentation included"
+          examples_included:
+            type: boolean
+            description: "Code examples and use cases included"
+          troubleshooting:
+            type: boolean
+            description: "Troubleshooting guide included"
+          contribution_guide:
+            type: boolean
+            description: "Contribution guidelines included"
+          deployment_guide:
+            type: boolean
+            description: "Deployment instructions included"
+        required: ["installation_guide", "getting_started", "api_reference", "examples_included", "troubleshooting", "contribution_guide", "deployment_guide"]
+      
+      quality_metrics:
+        type: object
+        properties:
+          completeness_score:
+            type: number
+            description: "Documentation completeness score (1-10)"
+          clarity_score:
+            type: number
+            description: "Documentation clarity score (1-10)"
+          usability_score:
+            type: number
+            description: "Documentation usability score (1-10)"
+          example_coverage:
+            type: number
+            description: "Percentage of features covered by examples"
+          accuracy_validation:
+            type: string
+            description: "Method used to validate documentation accuracy"
+        required: ["completeness_score", "clarity_score", "usability_score", "example_coverage", "accuracy_validation"]
+      
+      documentation_summary:
+        type: string
+        description: "Summary of documentation created and key features covered"
+    
+    required: ["documentation_structure", "content_coverage", "quality_metrics", "documentation_summary"]
+
+prompt: |
+  Create comprehensive documentation for the following project:
+  
+  PROJECT LOCATION: {{ project_location }}
+  
+  DOCUMENTATION PARAMETERS:
+  - Documentation Style: {{ documentation_style }}
+  - Include Examples: {{ include_examples }}
+  - Target Audience: {{ target_audience }}
+  - Documentation Format: {{ documentation_format }}
+  - Include API Docs: {{ include_api_docs }}
+  - Tutorial Level: {{ tutorial_level }}
+  - Output Directory: {{ output_directory }}
+  
+  DOCUMENTATION REQUIREMENTS:
+  
+  1. README FILE:
+     - Create comprehensive project README
+     - Include project description and key features
+     - Add installation and setup instructions
+     - Provide quick start guide and basic examples
+     - Include contribution guidelines and license information
+  
+  2. GETTING STARTED GUIDE:
+     {% if tutorial_level == "beginner-friendly" %}
+     - Create step-by-step tutorial for beginners
+     - Include prerequisites and environment setup
+     - Provide detailed walkthrough with explanations
+     - Add troubleshooting for common issues
+     {% endif %}
+  
+  3. API DOCUMENTATION:
+     {% if include_api_docs == "true" or include_api_docs == "auto-detect" %}
+     - Document all public APIs and interfaces
+     - Include function/method signatures and parameters
+     - Provide usage examples for each API endpoint
+     - Document error codes and response formats
+     {% endif %}
+  
+  4. CODE EXAMPLES:
+     {% if include_examples == "true" %}
+     - Create practical, working code examples
+     - Cover common use cases and scenarios
+     - Include both basic and advanced examples
+     - Provide example outputs and expected results
+     {% endif %}
+  
+  5. INSTALLATION & SETUP:
+     - Write detailed installation instructions
+     - Cover different platforms and environments
+     - Include dependency management and requirements
+     - Provide verification steps and testing
+  
+  6. CONFIGURATION GUIDE:
+     - Document all configuration options
+     - Explain environment variables and settings
+     - Provide configuration examples and templates
+     - Include security and best practices recommendations
+  
+  7. TROUBLESHOOTING:
+     - Create comprehensive troubleshooting guide
+     - Document common issues and solutions
+     - Include debugging tips and techniques
+     - Provide support and community resources
+  
+  8. CONTRIBUTION GUIDELINES:
+     - Write contributor onboarding guide
+     - Document development setup and workflow
+     - Include coding standards and review process
+     - Provide templates for issues and pull requests
+  
+  DOCUMENTATION DELIVERABLES:
+  Create all documentation in the specified directory including:
+  - Comprehensive README with all essential information
+  - Detailed installation and setup guides
+  - API reference documentation with examples
+  - User guides and tutorials appropriate for target audience
+  - Troubleshooting and FAQ sections
+  - Contribution guidelines and developer resources
+  
+  Focus on creating documentation that is:
+  - Clear, concise, and easy to understand
+  - Comprehensive yet well-organized
+  - Practical with working examples
+  - Accessible to the target audience
+  - Accurate and up-to-date

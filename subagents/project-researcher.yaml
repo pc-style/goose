@@ -1,0 +1,273 @@
+version: "1.0.0"
+title: "Project Researcher"
+description: "Specialized subagent for analyzing project requirements, researching technologies, and creating comprehensive project specifications"
+
+instructions: |
+  You are a Senior Project Research Analyst with expertise in:
+  
+  - Requirements analysis and specification writing
+  - Technology research and evaluation
+  - Market analysis and best practices research
+  - Architecture and design pattern recommendations
+  - Risk assessment and mitigation planning
+  - Competitive analysis and feature benchmarking
+  
+  Your responsibilities:
+  1. ANALYZE the project goal to extract detailed requirements
+  2. RESEARCH relevant technologies, frameworks, and tools
+  3. EVALUATE different implementation approaches
+  4. CREATE comprehensive project specifications
+  5. IDENTIFY potential risks and challenges
+  6. RECOMMEND optimal technology stack and architecture
+  
+  Research Process:
+  1. Break down the project goal into functional and non-functional requirements
+  2. Research current industry standards and best practices
+  3. Analyze similar projects and solutions in the market
+  4. Evaluate technology options based on project needs
+  5. Create detailed specifications with clear acceptance criteria
+  6. Document assumptions, constraints, and dependencies
+
+parameters:
+  - key: project_goal
+    input_type: string
+    requirement: required
+    description: "The project goal to analyze and research"
+  
+  - key: analysis_depth
+    input_type: string
+    requirement: optional
+    default: "comprehensive"
+    description: "Depth of analysis: 'basic', 'standard', or 'comprehensive'"
+  
+  - key: research_scope
+    input_type: string
+    requirement: optional
+    default: "full"
+    description: "Research scope: 'minimal', 'focused', or 'full'"
+  
+  - key: target_audience
+    input_type: string
+    requirement: optional
+    default: "general"
+    description: "Target audience: 'technical', 'business', or 'general'"
+  
+  - key: budget_constraints
+    input_type: string
+    requirement: optional
+    default: "moderate"
+    description: "Budget constraints: 'tight', 'moderate', or 'flexible'"
+  
+  - key: timeline_constraints
+    input_type: string
+    requirement: optional
+    default: "moderate"
+    description: "Timeline constraints: 'urgent', 'moderate', or 'flexible'"
+  
+  - key: output_directory
+    input_type: string
+    requirement: optional
+    default: "./research-output"
+    description: "Directory to store research outputs and specifications"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 600
+    bundled: true
+  
+  - type: builtin
+    name: memory
+    timeout: 300
+    bundled: true
+  
+  - type: command
+    name: web_search
+    command: "uvx mcp-server-fetch"
+    timeout: 300
+  
+  - type: command
+    name: tavily_search
+    command: "npx -y tavily-mcp"
+    timeout: 300
+    env_keys:
+      - TAVILY_API_KEY
+
+response:
+  json_schema:
+    type: object
+    properties:
+      requirements_analysis:
+        type: object
+        properties:
+          functional_requirements:
+            type: array
+            items:
+              type: string
+            description: "List of functional requirements"
+          non_functional_requirements:
+            type: array
+            items:
+              type: string
+            description: "List of non-functional requirements"
+          user_stories:
+            type: array
+            items:
+              type: string
+            description: "User stories and use cases"
+          acceptance_criteria:
+            type: array
+            items:
+              type: string
+            description: "Clear acceptance criteria for each requirement"
+        required: ["functional_requirements", "non_functional_requirements", "user_stories", "acceptance_criteria"]
+      
+      technology_research:
+        type: object
+        properties:
+          recommended_stack:
+            type: object
+            properties:
+              frontend:
+                type: array
+                items:
+                  type: string
+              backend:
+                type: array
+                items:
+                  type: string
+              database:
+                type: array
+                items:
+                  type: string
+              infrastructure:
+                type: array
+                items:
+                  type: string
+            description: "Recommended technology stack"
+          alternatives_considered:
+            type: array
+            items:
+              type: object
+              properties:
+                technology:
+                  type: string
+                pros:
+                  type: array
+                  items:
+                    type: string
+                cons:
+                  type: array
+                  items:
+                    type: string
+              required: ["technology", "pros", "cons"]
+            description: "Alternative technologies considered"
+          justification:
+            type: string
+            description: "Justification for recommended stack"
+        required: ["recommended_stack", "alternatives_considered", "justification"]
+      
+      project_specification:
+        type: object
+        properties:
+          project_overview:
+            type: string
+            description: "Comprehensive project overview"
+          architecture_design:
+            type: string
+            description: "High-level architecture design"
+          implementation_phases:
+            type: array
+            items:
+              type: object
+              properties:
+                phase_name:
+                  type: string
+                description:
+                  type: string
+                deliverables:
+                  type: array
+                  items:
+                    type: string
+                estimated_duration:
+                  type: string
+              required: ["phase_name", "description", "deliverables", "estimated_duration"]
+            description: "Implementation phases and milestones"
+          risk_assessment:
+            type: array
+            items:
+              type: object
+              properties:
+                risk:
+                  type: string
+                impact:
+                  type: string
+                probability:
+                  type: string
+                mitigation:
+                  type: string
+              required: ["risk", "impact", "probability", "mitigation"]
+            description: "Risk assessment and mitigation strategies"
+        required: ["project_overview", "architecture_design", "implementation_phases", "risk_assessment"]
+      
+      research_summary:
+        type: string
+        description: "Executive summary of research findings and recommendations"
+    
+    required: ["requirements_analysis", "technology_research", "project_specification", "research_summary"]
+
+prompt: |
+  Conduct comprehensive research and analysis for this project:
+  
+  PROJECT GOAL: {{ project_goal }}
+  
+  RESEARCH PARAMETERS:
+  - Analysis Depth: {{ analysis_depth }}
+  - Research Scope: {{ research_scope }}
+  - Target Audience: {{ target_audience }}
+  - Budget Constraints: {{ budget_constraints }}
+  - Timeline Constraints: {{ timeline_constraints }}
+  - Output Directory: {{ output_directory }}
+  
+  RESEARCH TASKS:
+  
+  1. REQUIREMENTS ANALYSIS:
+     - Break down the project goal into specific functional requirements
+     - Identify non-functional requirements (performance, security, scalability)
+     - Create user stories and use cases
+     - Define clear acceptance criteria for each requirement
+  
+  2. TECHNOLOGY RESEARCH:
+     - Research current industry standards and best practices
+     - Evaluate different technology stacks and frameworks
+     - Consider factors: performance, scalability, maintainability, cost
+     - Analyze pros and cons of different approaches
+     - Provide justified recommendations
+  
+  3. MARKET & COMPETITIVE ANALYSIS:
+     - Research similar projects and solutions
+     - Analyze market trends and user expectations
+     - Identify opportunities for differentiation
+     - Benchmark against existing solutions
+  
+  4. ARCHITECTURE & DESIGN:
+     - Design high-level system architecture
+     - Recommend design patterns and best practices
+     - Consider scalability and maintainability
+     - Plan for future extensibility
+  
+  5. RISK ASSESSMENT:
+     - Identify technical, business, and operational risks
+     - Assess impact and probability of each risk
+     - Develop mitigation strategies
+     - Plan contingency approaches
+  
+  6. PROJECT SPECIFICATION:
+     - Create comprehensive project specification document
+     - Define implementation phases and milestones
+     - Estimate timelines and resource requirements
+     - Document assumptions and constraints
+  
+  Create all research outputs in the specified directory and provide detailed analysis that will guide the entire project execution.
+  
+  Focus on providing actionable insights and clear recommendations that other team members can use to implement the project successfully.

@@ -1,0 +1,354 @@
+version: "1.0.0"
+title: "Task Manager"
+description: "Specialized subagent for breaking down projects into manageable tasks, creating execution roadmaps, and managing dependencies"
+
+instructions: |
+  You are a Senior Project Manager and Agile Coach with expertise in:
+  
+  - Project decomposition and task breakdown structures
+  - Agile and waterfall project management methodologies
+  - Dependency mapping and critical path analysis
+  - Resource planning and timeline estimation
+  - Risk management and contingency planning
+  - Sprint planning and milestone definition
+  
+  Your responsibilities:
+  1. DECOMPOSE complex projects into manageable tasks and subtasks
+  2. CREATE detailed execution roadmaps with clear milestones
+  3. IDENTIFY and map dependencies between tasks
+  4. ESTIMATE effort, duration, and resource requirements
+  5. PLAN optimal execution sequences and parallel workflows
+  6. DEFINE acceptance criteria and success metrics for each task
+  
+  Task Management Process:
+  1. Analyze project requirements and break into work packages
+  2. Create hierarchical task breakdown structure (TBS)
+  3. Identify dependencies and critical path
+  4. Estimate effort and duration for each task
+  5. Sequence tasks for optimal execution
+  6. Define milestones and checkpoints
+  7. Create contingency plans for high-risk tasks
+
+parameters:
+  - key: project_goal
+    input_type: string
+    requirement: required
+    description: "The project goal to break down into tasks"
+  
+  - key: project_specification
+    input_type: string
+    requirement: optional
+    default: ""
+    description: "Detailed project specification from research phase"
+  
+  - key: planning_style
+    input_type: string
+    requirement: optional
+    default: "agile"
+    description: "Planning methodology: 'agile', 'waterfall', or 'hybrid'"
+  
+  - key: dependency_tracking
+    input_type: string
+    requirement: optional
+    default: "enabled"
+    description: "Dependency tracking: 'enabled' or 'disabled'"
+  
+  - key: team_size
+    input_type: string
+    requirement: optional
+    default: "small"
+    description: "Team size: 'solo', 'small', 'medium', or 'large'"
+  
+  - key: project_duration
+    input_type: string
+    requirement: optional
+    default: "medium"
+    description: "Expected duration: 'short' (days), 'medium' (weeks), or 'long' (months)"
+  
+  - key: risk_tolerance
+    input_type: string
+    requirement: optional
+    default: "moderate"
+    description: "Risk tolerance: 'low', 'moderate', or 'high'"
+  
+  - key: output_directory
+    input_type: string
+    requirement: optional
+    default: "./task-management-output"
+    description: "Directory to store task management outputs"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 600
+    bundled: true
+  
+  - type: builtin
+    name: memory
+    timeout: 300
+    bundled: true
+
+response:
+  json_schema:
+    type: object
+    properties:
+      task_breakdown:
+        type: object
+        properties:
+          work_packages:
+            type: array
+            items:
+              type: object
+              properties:
+                package_id:
+                  type: string
+                package_name:
+                  type: string
+                description:
+                  type: string
+                tasks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      task_id:
+                        type: string
+                      task_name:
+                        type: string
+                      description:
+                        type: string
+                      estimated_effort:
+                        type: string
+                      estimated_duration:
+                        type: string
+                      priority:
+                        type: string
+                      complexity:
+                        type: string
+                      acceptance_criteria:
+                        type: array
+                        items:
+                          type: string
+                    required: ["task_id", "task_name", "description", "estimated_effort", "estimated_duration", "priority", "complexity", "acceptance_criteria"]
+              required: ["package_id", "package_name", "description", "tasks"]
+            description: "Hierarchical breakdown of work packages and tasks"
+          total_estimated_effort:
+            type: string
+            description: "Total estimated effort for the project"
+          total_estimated_duration:
+            type: string
+            description: "Total estimated duration for the project"
+        required: ["work_packages", "total_estimated_effort", "total_estimated_duration"]
+      
+      dependency_analysis:
+        type: object
+        properties:
+          task_dependencies:
+            type: array
+            items:
+              type: object
+              properties:
+                task_id:
+                  type: string
+                depends_on:
+                  type: array
+                  items:
+                    type: string
+                dependency_type:
+                  type: string
+                blocking_impact:
+                  type: string
+              required: ["task_id", "depends_on", "dependency_type", "blocking_impact"]
+            description: "Task dependencies and relationships"
+          critical_path:
+            type: array
+            items:
+              type: string
+            description: "Critical path tasks that determine project duration"
+          parallel_opportunities:
+            type: array
+            items:
+              type: object
+              properties:
+                parallel_group:
+                  type: string
+                tasks:
+                  type: array
+                  items:
+                    type: string
+                potential_time_savings:
+                  type: string
+              required: ["parallel_group", "tasks", "potential_time_savings"]
+            description: "Opportunities for parallel execution"
+        required: ["task_dependencies", "critical_path", "parallel_opportunities"]
+      
+      execution_roadmap:
+        type: object
+        properties:
+          phases:
+            type: array
+            items:
+              type: object
+              properties:
+                phase_id:
+                  type: string
+                phase_name:
+                  type: string
+                description:
+                  type: string
+                tasks:
+                  type: array
+                  items:
+                    type: string
+                execution_type:
+                  type: string
+                estimated_duration:
+                  type: string
+                deliverables:
+                  type: array
+                  items:
+                    type: string
+                success_criteria:
+                  type: array
+                  items:
+                    type: string
+              required: ["phase_id", "phase_name", "description", "tasks", "execution_type", "estimated_duration", "deliverables", "success_criteria"]
+            description: "Execution phases with tasks and deliverables"
+          milestones:
+            type: array
+            items:
+              type: object
+              properties:
+                milestone_id:
+                  type: string
+                milestone_name:
+                  type: string
+                target_date:
+                  type: string
+                completion_criteria:
+                  type: array
+                  items:
+                    type: string
+                dependencies:
+                  type: array
+                  items:
+                    type: string
+              required: ["milestone_id", "milestone_name", "target_date", "completion_criteria", "dependencies"]
+            description: "Project milestones and checkpoints"
+        required: ["phases", "milestones"]
+      
+      risk_management:
+        type: object
+        properties:
+          high_risk_tasks:
+            type: array
+            items:
+              type: object
+              properties:
+                task_id:
+                  type: string
+                risk_factors:
+                  type: array
+                  items:
+                    type: string
+                impact_level:
+                  type: string
+                mitigation_strategies:
+                  type: array
+                  items:
+                    type: string
+                contingency_plans:
+                  type: array
+                  items:
+                    type: string
+              required: ["task_id", "risk_factors", "impact_level", "mitigation_strategies", "contingency_plans"]
+            description: "High-risk tasks and mitigation strategies"
+          buffer_recommendations:
+            type: array
+            items:
+              type: object
+              properties:
+                phase:
+                  type: string
+                recommended_buffer:
+                  type: string
+                justification:
+                  type: string
+              required: ["phase", "recommended_buffer", "justification"]
+            description: "Recommended time buffers for phases"
+        required: ["high_risk_tasks", "buffer_recommendations"]
+      
+      management_summary:
+        type: string
+        description: "Executive summary of task breakdown and execution plan"
+    
+    required: ["task_breakdown", "dependency_analysis", "execution_roadmap", "risk_management", "management_summary"]
+
+prompt: |
+  Create a comprehensive task breakdown and execution plan for this project:
+  
+  PROJECT GOAL: {{ project_goal }}
+  {% if project_specification %}
+  PROJECT SPECIFICATION: {{ project_specification }}
+  {% endif %}
+  
+  PLANNING PARAMETERS:
+  - Planning Style: {{ planning_style }}
+  - Dependency Tracking: {{ dependency_tracking }}
+  - Team Size: {{ team_size }}
+  - Project Duration: {{ project_duration }}
+  - Risk Tolerance: {{ risk_tolerance }}
+  - Output Directory: {{ output_directory }}
+  
+  TASK MANAGEMENT OBJECTIVES:
+  
+  1. PROJECT DECOMPOSITION:
+     - Break down the project into logical work packages
+     - Create detailed task breakdown structure (TBS)
+     - Define clear, actionable tasks with specific outcomes
+     - Ensure tasks are sized appropriately for the team
+     - Include all necessary development, testing, and deployment tasks
+  
+  2. EFFORT & DURATION ESTIMATION:
+     - Estimate effort required for each task (person-hours/days)
+     - Estimate duration considering dependencies and resources
+     - Account for complexity and uncertainty factors
+     - Include time for reviews, testing, and iterations
+     - Consider learning curves and ramp-up time
+  
+  3. DEPENDENCY ANALYSIS:
+     - Identify all task dependencies and relationships
+     - Map critical path that determines project timeline
+     - Find opportunities for parallel execution
+     - Analyze blocking risks and bottlenecks
+     - Plan for dependency management
+  
+  4. EXECUTION PLANNING:
+     - Sequence tasks for optimal execution flow
+     - Group related tasks into logical phases
+     - Define clear milestones and checkpoints
+     - Plan for iterative development and feedback loops
+     - Consider resource constraints and availability
+  
+  5. RISK MANAGEMENT:
+     - Identify high-risk tasks and potential blockers
+     - Develop mitigation strategies for each risk
+     - Create contingency plans for critical failures
+     - Recommend time buffers for uncertain tasks
+     - Plan for scope changes and requirement evolution
+  
+  6. SUCCESS METRICS:
+     - Define acceptance criteria for each task
+     - Establish success metrics for each phase
+     - Plan quality gates and review checkpoints
+     - Define completion criteria for milestones
+     - Create testing and validation plans
+  
+  Create detailed task management outputs in the specified directory that provide:
+  - Clear roadmap for project execution
+  - Actionable tasks with specific deliverables
+  - Realistic timelines with appropriate buffers
+  - Risk mitigation and contingency plans
+  - Success criteria and quality gates
+  
+  Focus on creating a practical, executable plan that maximizes team productivity and project success probability.
