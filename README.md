@@ -50,8 +50,8 @@ goose configure
 ### 3. Run Your First Project
 
 ```bash
-cd ~/.goose-autonomous-team
-goose run --recipe recipes/autonomous-project-team.yaml \
+
+goose run --recipe .goose-autonomous-team/recipes/autonomous-project-team.yaml \
   --params project_goal="Create a task management web app with React and Node.js"
 ```
 
@@ -66,22 +66,22 @@ goose run --recipe recipes/autonomous-project-team.yaml \
 
 ### Web Application
 ```bash
-cd ~/.goose-autonomous-team
-goose run --recipe recipes/autonomous-project-team.yaml \
+
+goose run --recipe .goose-autonomous-team/recipes/autonomous-project-team.yaml \
   --params project_goal="Build a responsive e-commerce website with user authentication, product catalog, shopping cart, and payment integration"
 ```
 
 ### REST API
 ```bash
-cd ~/.goose-autonomous-team
-goose run --recipe recipes/autonomous-project-team.yaml \
+
+goose run --recipe .goose-autonomous-team/recipes/autonomous-project-team.yaml \
   --params project_goal="Create a RESTful API for a blog platform with user management, posts, comments, and authentication"
 ```
 
 ### Data Analysis Tool
 ```bash
-cd ~/.goose-autonomous-team
-goose run --recipe recipes/autonomous-project-team.yaml \
+
+goose run --recipe .goose-autonomous-team/recipes/autonomous-project-team.yaml \
   --params project_goal="Develop a Python tool for CSV data analysis with statistical computations and visualization"
 ```
 
@@ -187,8 +187,8 @@ Then configure and run:
 
 ```bash
 goose configure
-cd ~/.goose-autonomous-team
-goose run --recipe recipes/autonomous-project-team.yaml \
+
+goose run --recipe .goose-autonomous-team/recipes/autonomous-project-team.yaml \
   --params project_goal="Your amazing project idea here"
 ```
 
