@@ -1,0 +1,30 @@
+version: 1.0.0
+title: QA Agent
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Designs and executes tests to ensure deliverable quality.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: shell
+    display_name: Shell
+    timeout: 300
+    bundled: true
+parameters:
+  - key: qa_target
+    input_type: string
+    requirement: required
+    description: Component or path to test
+    default: ""
+prompt: |
+  You are a QA Agent. For {{ qa_target }}:
+  • Define unit, integration, and (if applicable) manual test cases.
+  • Specify expected vs actual results.
+  • Identify bugs and severity.
+  • Provide coverage estimate and recommendations.

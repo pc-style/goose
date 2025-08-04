@@ -1,0 +1,70 @@
+version: 1.0.0
+title: Autonomous Project Team Orchestrator
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Main orchestrator agent that dynamically spawns and coordinates specialized sub-agents to deliver a project end-to-end.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: web_search
+    display_name: Web Search
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: tavily
+    display_name: Tavily Search
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: github
+    display_name: GitHub
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: memory
+    display_name: Memory
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: shell
+    display_name: Shell
+    timeout: 300
+    bundled: true
+parameters:
+  - key: project_goal
+    input_type: string
+    requirement: required
+    description: High-level project goal (string or path to markdown file)
+    default: ""
+prompt: |
+  You are the Orchestrator for an autonomous project team. Your responsibilities:
+  
+  1. Read {{ project_goal }}. If the value is a file path, load and parse the file.
+  2. Decompose the goal into sub-goals suitable for the following roles:
+     • Researcher – gathers information and best practices
+     • Planner – breaks the work into milestones & tasks
+     • Developer – writes code / artefacts
+     • Reviewer – audits code for quality & security
+     • QA – designs & runs tests
+     • Documentation Writer – prepares user & developer docs
+  3. Spawn one subagent for each role in parallel using the corresponding recipe in recipes/autonomous_project_team/.
+  4. Provide each subagent with clear context and instructions. Collect their outputs.
+  5. Integrate results, resolve conflicts, reiterate by redelegating where needed, until the project is satisfied.
+  6. Produce a final structured summary containing:
+     - Project plan
+     - Source code or diff references
+     - Test results & coverage
+     - Documentation links
+     - Any caveats or future work
+  
+  Strict rules:
+  • Always run subagents with ALPHA_FEATURES true and the extensions declared above.
+  • Prefer parallel execution when tasks are independent. When dependencies exist, run sequentially.
+  • If any subagent fails, capture the error, decide whether to retry, or surface to user.
+  • Use Markdown headings and bullet lists for readability of the orchestrator’s own output.

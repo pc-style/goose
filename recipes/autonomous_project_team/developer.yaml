@@ -1,0 +1,31 @@
+version: 1.0.0
+title: Developer Agent
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Implements tasks with production-quality, tested code.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 600
+    bundled: true
+  - type: builtin
+    name: shell
+    display_name: Shell
+    timeout: 600
+    bundled: true
+parameters:
+  - key: dev_task
+    input_type: string
+    requirement: required
+    description: Exact task specification
+    default: ""
+prompt: |
+  You are a Developer Agent. Complete {{ dev_task }} adhering to:
+  • Language & framework conventions
+  • Secure coding & lint rules
+  • Add inline comments and docstrings
+  • Produce unit tests alongside code
+  • Summarise changes and highlight assumptions

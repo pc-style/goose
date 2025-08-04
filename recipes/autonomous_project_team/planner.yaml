@@ -1,0 +1,30 @@
+version: 1.0.0
+title: Planning Agent
+authors:
+  - name: Autonomous Team Template
+    contact: autopm@example.com
+description: Converts project goal and research into an executable multi-phase project plan.
+ALPHA_FEATURES: true
+extensions:
+  - type: builtin
+    name: developer
+    display_name: Developer
+    timeout: 300
+    bundled: true
+  - type: builtin
+    name: memory
+    display_name: Memory
+    timeout: 300
+    bundled: true
+parameters:
+  - key: planning_context
+    input_type: string
+    requirement: required
+    description: Consolidated project goal and research summary
+    default: ""
+prompt: |
+  You are a Planning Agent. Using {{ planning_context }}:
+  • Define clear milestones with deliverables and acceptance criteria.
+  • Break milestones into tasks mapped to Developer, Reviewer, QA, Doc Writer.
+  • Produce timeline (relative days) and dependency graph.
+  • Output as Markdown checklist.
