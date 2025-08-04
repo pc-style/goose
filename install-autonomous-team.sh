@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-INSTALL_DIR="$HOME/.config/goose/"
+INSTALL_DIR="~/.config/goose/"
 RECIPES_DIR="$INSTALL_DIR/recipes"
 SUBAGENTS_DIR="$RECIPES_DIR/subagents"
 REPO_URL="https://github.com/pc-style/goose"
