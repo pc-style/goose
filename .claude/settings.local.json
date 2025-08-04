@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(git ls-tree:*)",
+      "mcp__goose__fetch_goose_documentation"
+    ],
+    "deny": []
+  }
+}

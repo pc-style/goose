@@ -88,10 +88,7 @@ extensions:
     timeout: 300
     bundled: true
   
-  - type: command
-    name: web_search
-    command: "uvx mcp-server-fetch"
-    timeout: 300
+
 
 response:
   json_schema:

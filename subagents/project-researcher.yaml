@@ -81,17 +81,7 @@ extensions:
     timeout: 300
     bundled: true
   
-  - type: command
-    name: web_search
-    command: "uvx mcp-server-fetch"
-    timeout: 300
-  
-  - type: command
-    name: tavily_search
-    command: "npx -y tavily-mcp"
-    timeout: 300
-    env_keys:
-      - TAVILY_API_KEY
+
 
 response:
   json_schema:
