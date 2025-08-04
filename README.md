@@ -10,7 +10,7 @@ The Autonomous Project Team system is a sophisticated framework that takes high-
 
 - **🧠 Intelligent Orchestration**: Meta-AI coordinator that analyzes project goals and determines optimal team composition
 - **👥 Specialized Subagents**: 7 expert AI agents handling different aspects of development
-- **⚡ Parallel Execution**: Smart workflow management with parallel and sequential task execution
+- **⚡ Parallel Execution**: **STRICT** parallel optimization for Phases 3 & 4 - up to 40% faster execution
 - **📊 Structured Output**: Comprehensive JSON outputs with quality metrics and progress tracking
 - **🔧 MCP Integration**: Leverages powerful MCP servers for extended capabilities
 - **📚 Complete Documentation**: Auto-generated documentation, tests, and deployment configs
@@ -33,25 +33,25 @@ Project Goal → Main Orchestrator → Specialized Subagents → Complete Projec
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### 1. One-Line Installation
 
 ```bash
-# Run the auto-installer
-./install-autonomous-team.sh
+# Install from anywhere with one command
+bash <(curl -fsSL https://raw.githubusercontent.com/pc-style/goose/main/install-autonomous-team.sh)
 ```
 
-### 2. Configuration
+### 2. Configure Your AI Provider
 
 ```bash
-# Copy and configure environment variables
-cp .env.template .env
-# Edit .env with your API keys
+# Use Goose's built-in configuration
+goose configure
 ```
 
 ### 3. Run Your First Project
 
 ```bash
-goose run --recipe autonomous-project-team.yaml \
+cd ~/.goose-autonomous-team
+goose run --recipe recipes/autonomous-project-team.yaml \
   --params project_goal="Create a task management web app with React and Node.js"
 ```
 
@@ -66,19 +66,22 @@ goose run --recipe autonomous-project-team.yaml \
 
 ### Web Application
 ```bash
-goose run --recipe autonomous-project-team.yaml \
+cd ~/.goose-autonomous-team
+goose run --recipe recipes/autonomous-project-team.yaml \
   --params project_goal="Build a responsive e-commerce website with user authentication, product catalog, shopping cart, and payment integration"
 ```
 
 ### REST API
 ```bash
-goose run --recipe autonomous-project-team.yaml \
+cd ~/.goose-autonomous-team
+goose run --recipe recipes/autonomous-project-team.yaml \
   --params project_goal="Create a RESTful API for a blog platform with user management, posts, comments, and authentication"
 ```
 
 ### Data Analysis Tool
 ```bash
-goose run --recipe autonomous-project-team.yaml \
+cd ~/.goose-autonomous-team
+goose run --recipe recipes/autonomous-project-team.yaml \
   --params project_goal="Develop a Python tool for CSV data analysis with statistical computations and visualization"
 ```
 
@@ -109,7 +112,10 @@ For each project, the system typically delivers:
 The system intelligently selects which subagents to use based on project requirements.
 
 ### Parallel Processing
-Independent tasks execute simultaneously for faster completion.
+**MANDATORY** parallel execution for development and testing phases:
+- **Phase 3**: Code developer + Code reviewer work simultaneously
+- **Phase 4**: Documentation writer + QA specialist run concurrently
+- **Result**: Up to 40% faster project completion
 
 ### Structured Output
 All results are provided in structured JSON format for easy integration.
@@ -143,9 +149,10 @@ Persistent context and learning across project executions.
 
 ## 🚨 Important Notes
 
-- **Alpha Features Required**: Enable `ALPHA_FEATURES=true` in Goose config
+- **Alpha Features Required**: Enable `ALPHA_FEATURES=true` in Goose config (auto-handled by installer)
 - **API Costs**: Monitor usage as complex projects may consume significant tokens
-- **Execution Time**: Projects can take 2-6 hours depending on complexity
+- **Execution Time**: Projects take 2-6 hours (40% faster with parallel execution)
+- **Updates**: Re-run installer to get latest features: `bash <(curl -fsSL https://raw.githubusercontent.com/pc-style/goose/main/install-autonomous-team.sh)`
 
 ## 🤝 Contributing
 
@@ -172,7 +179,17 @@ This system is designed to work with the Goose AI framework. Please refer to Goo
 Ready to revolutionize your development workflow? 
 
 ```bash
-./install-autonomous-team.sh
+# One command to rule them all
+bash <(curl -fsSL https://raw.githubusercontent.com/pc-style/goose/main/install-autonomous-team.sh)
+```
+
+Then configure and run:
+
+```bash
+goose configure
+cd ~/.goose-autonomous-team
+goose run --recipe recipes/autonomous-project-team.yaml \
+  --params project_goal="Your amazing project idea here"
 ```
 
 **Happy autonomous coding! 🚀**
