@@ -26,6 +26,9 @@ goose run --recipe autonomous-project-team.yaml \
 # Auto-installation
 ./install-autonomous-team.sh
 
+# Configure your AI provider
+goose configure
+
 # Manual Goose configuration (if needed)
 export ALPHA_FEATURES=true
 ```
@@ -60,13 +63,13 @@ goose run --recipe subagents/code-developer.yaml --params task_specification="Bu
 
 ### Execution Flow
 
-The system follows a 5-phase execution strategy:
+The system follows a 5-phase execution strategy with parallel optimization:
 
-1. **Analysis & Research**: Project researcher analyzes goals and researches technologies
-2. **Planning & Breakdown**: Task manager creates execution roadmap with dependencies
-3. **Development**: Code developer implements solution, code reviewer ensures quality
-4. **Documentation & Testing**: Documentation writer and QA specialist ensure completeness
-5. **Deployment & Finalization**: Deployment specialist handles production setup
+1. **Analysis & Research**: Project researcher analyzes goals and researches technologies (sequential)
+2. **Planning & Breakdown**: Task manager creates execution roadmap with dependencies (sequential)
+3. **Development**: Code developer and code reviewer work in PARALLEL (reviewer works on completed components)
+4. **Documentation & Testing**: Documentation writer and QA specialist run in PARALLEL for maximum efficiency
+5. **Deployment & Finalization**: Deployment specialist handles production setup (sequential)
 
 ### Configuration Architecture
 

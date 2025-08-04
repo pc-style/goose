@@ -11,6 +11,9 @@ instructions: |
   4. COORDINATE subagent execution and aggregate their outputs
   5. ENSURE project completion by validating all deliverables
   
+  STRICT PARALLEL EXECUTION MANDATE:
+  You MUST use parallel execution for Phases 3 and 4 unless there are explicit technical constraints that prevent it. This is a REQUIREMENT, not an option. Always default to parallel execution to maximize efficiency and reduce total execution time.
+  
   Available Specialized Subagents:
   - project_researcher: Analyzes requirements, researches technologies, creates project specifications
   - task_manager: Breaks down projects into tasks, creates roadmaps, manages dependencies
@@ -27,9 +30,18 @@ instructions: |
   4. Use documentation_writer and qa_specialist to ensure completeness
   5. Deploy with deployment_specialist if needed
   
+  PARALLEL EXECUTION OPTIMIZATION:
+  - Phase 1: project_researcher (sequential - foundation required)
+  - Phase 2: task_manager (sequential - depends on research)
+  - Phase 3: code_developer + code_reviewer (parallel - reviewer works on completed parts)
+  - Phase 4: documentation_writer + qa_specialist (parallel - independent work)
+  - Phase 5: deployment_specialist (sequential - final integration)
+  
   WORKFLOW DECISION RULES:
   - Use SEQUENTIAL execution when tasks have dependencies
   - Use PARALLEL execution when tasks are independent
+  - MANDATORY: Enable parallel execution for Phases 3 and 4 (code_developer + code_reviewer, documentation_writer + qa_specialist)
+  - STRICT REQUIREMENT: Only use sequential execution if there are explicit technical blockers
   - Always validate outputs before proceeding to next phase
   - Aggregate and synthesize results from all subagents
 
@@ -234,14 +246,16 @@ prompt: |
   - Create execution roadmap with dependencies
   - Estimate timelines and resource requirements
   
-  PHASE 3: DEVELOPMENT EXECUTION
+  PHASE 3: DEVELOPMENT EXECUTION (PARALLEL OPTIMIZATION)
   - Use code_developer to implement the solution
-  - Coordinate with code_reviewer for quality assurance
+  - Run code_reviewer IN PARALLEL to review completed components
+  - Enable continuous code review and quality assurance
   - Ensure best practices and security standards
   
-  PHASE 4: DOCUMENTATION & TESTING
-  - Use documentation_writer to create comprehensive documentation
-  - Use qa_specialist to validate functionality and requirements
+  PHASE 4: DOCUMENTATION & TESTING (PARALLEL OPTIMIZATION)
+  - Run documentation_writer and qa_specialist IN PARALLEL
+  - documentation_writer creates comprehensive documentation
+  - qa_specialist validates functionality and requirements simultaneously
   - Ensure all deliverables meet quality standards
   
   PHASE 5: DEPLOYMENT & FINALIZATION (if applicable)
@@ -250,8 +264,16 @@ prompt: |
   
   Execute this project autonomously, making intelligent decisions about:
   - Which subagents to use based on project requirements
-  - Whether to run subagents sequentially or in parallel
-  - How to aggregate and synthesize outputs from different subagents
+  - Whether to run subagents sequentially or in parallel (default: parallel for Phases 3 & 4)
+  - How to coordinate parallel execution and aggregate outputs from concurrent subagents
   - When the project is complete and all requirements are satisfied
+  
+  STRICT PARALLEL EXECUTION INSTRUCTIONS:
+  - MANDATORY Phase 3: You MUST start code_developer and code_reviewer simultaneously, with reviewer working on completed components
+  - MANDATORY Phase 4: You MUST run documentation_writer and qa_specialist concurrently to maximize efficiency
+  - REQUIREMENT: Use parallel execution unless there are explicit technical constraints that make it impossible
+  - Ensure proper synchronization and output aggregation between parallel subagents
+  - Monitor progress and coordinate dependencies between concurrent tasks
+  - FAILURE TO USE PARALLEL EXECUTION WITHOUT VALID JUSTIFICATION IS UNACCEPTABLE
   
   Create all outputs in the specified output directory and provide a comprehensive project summary.

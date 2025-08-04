@@ -16,6 +16,19 @@ NC='\033[0m' # No Color
 INSTALL_DIR="$HOME/.goose-autonomous-team"
 RECIPES_DIR="$INSTALL_DIR/recipes"
 SUBAGENTS_DIR="$RECIPES_DIR/subagents"
+REPO_URL="https://github.com/pc-style/goose"
+TEMP_DIR="/tmp/goose-autonomous-team-$$"
+
+# Cleanup function
+cleanup() {
+    if [ -d "$TEMP_DIR" ]; then
+        print_status "Cleaning up temporary files..."
+        rm -rf "$TEMP_DIR"
+    fi
+}
+
+# Set up trap for cleanup
+trap cleanup EXIT
 
 # Print colored output
 print_status() {
@@ -66,6 +79,23 @@ check_prerequisites() {
         print_error "pip3 is not installed"
     else
         print_success "pip3 found"
+    fi
+    
+    # Check git
+    if ! command_exists git; then
+        missing_deps+=("git")
+        print_error "git is not installed"
+    else
+        git_version=$(git --version | head -n1)
+        print_success "git found: $git_version"
+    fi
+    
+    # Check curl
+    if ! command_exists curl; then
+        missing_deps+=("curl")
+        print_error "curl is not installed"
+    else
+        print_success "curl found"
     fi
     
     # Check uv (Python package installer)
@@ -193,35 +223,50 @@ create_directories() {
     print_success "Directory structure created at: $INSTALL_DIR"
 }
 
-# Copy recipe files
+# Download and install recipe files from GitHub
 install_recipes() {
-    print_header "INSTALLING RECIPE FILES"
+    print_header "DOWNLOADING AND INSTALLING RECIPE FILES"
     
-    # Check if we're running from the source directory
-    if [ -f "autonomous-project-team.yaml" ]; then
-        print_status "Copying recipe files from current directory..."
+    # Create temporary directory
+    mkdir -p "$TEMP_DIR"
+    
+    print_status "Downloading recipe files from GitHub repository..."
+    
+    # Clone the repository to temp directory
+    if git clone --depth 1 "$REPO_URL" "$TEMP_DIR" >/dev/null 2>&1; then
+        print_success "Repository cloned successfully"
         
         # Copy main orchestrator recipe
-        cp "autonomous-project-team.yaml" "$RECIPES_DIR/"
-        print_success "Main orchestrator recipe installed"
-        
-        # Copy subagent recipes
-        if [ -d "subagents" ]; then
-            cp -r subagents/* "$SUBAGENTS_DIR/"
-            print_success "Subagent recipes installed"
+        if [ -f "$TEMP_DIR/autonomous-project-team.yaml" ]; then
+            cp "$TEMP_DIR/autonomous-project-team.yaml" "$RECIPES_DIR/"
+            print_success "Main orchestrator recipe installed"
         else
-            print_error "Subagents directory not found"
+            print_error "Main recipe file not found in repository"
             return 1
         fi
         
+        # Copy subagent recipes
+        if [ -d "$TEMP_DIR/subagents" ]; then
+            cp -r "$TEMP_DIR/subagents"/* "$SUBAGENTS_DIR/"
+            print_success "Subagent recipes installed"
+        else
+            print_error "Subagents directory not found in repository"
+            return 1
+        fi
+        
+        # Copy additional files if they exist
+        if [ -f "$TEMP_DIR/CLAUDE.md" ]; then
+            cp "$TEMP_DIR/CLAUDE.md" "$INSTALL_DIR/"
+            print_success "Project documentation copied"
+        fi
+        
+        print_success "Recipe files installed from GitHub repository"
+        
     else
-        print_status "Creating recipe files from templates..."
+        print_error "Failed to clone repository from $REPO_URL"
+        print_status "Falling back to minimal template creation..."
         
-        # We'll create the recipes here if not running from source
-        # This is a fallback - normally recipes should be copied from source
-        print_warning "Recipe source files not found - creating minimal templates"
-        
-        # Create a basic main recipe template
+        # Fallback: Create a basic main recipe template
         cat > "$RECIPES_DIR/autonomous-project-team.yaml" << 'EOF'
 version: "1.0.0"
 title: "Autonomous Project Team - Main Orchestrator"
@@ -246,7 +291,8 @@ prompt: |
   Execute this project autonomously: {{ project_goal }}
 EOF
         
-        print_success "Basic recipe template created"
+        print_warning "Basic recipe template created (fallback mode)"
+        return 1
     fi
 }
 
@@ -334,15 +380,16 @@ MONGODB_CONNECTION_STRING=mongodb://localhost:27017/your_database
 # Enable alpha features (required for subagents)
 ALPHA_FEATURES=true
 
-# Default provider and model
-GOOSE_PROVIDER=anthropic
-GOOSE_MODEL=claude-3.5-sonnet
+# OPTIONAL: Default provider and model
+# Uncomment and set these if you want to override goose configure settings
+# GOOSE_PROVIDER=anthropic
+# GOOSE_MODEL=claude-3.5-sonnet
 
-# Execution mode
-GOOSE_MODE=smart_approve
+# OPTIONAL: Execution mode
+# GOOSE_MODE=smart_approve
 
-# Maximum turns
-GOOSE_MAX_TURNS=100
+# OPTIONAL: Maximum turns
+# GOOSE_MAX_TURNS=100
 EOF
     
     print_success "Environment template created at: $INSTALL_DIR/.env.template"
@@ -684,19 +731,27 @@ main() {
     print_success "Autonomous Project Team system installed successfully!"
     echo
     print_status "Installation location: $INSTALL_DIR"
+    print_status "Repository: $REPO_URL"
     print_status "Next steps:"
-    echo "  1. Copy and configure environment variables:"
-    echo "     cp $INSTALL_DIR/.env.template $INSTALL_DIR/.env"
-    echo "     # Edit .env with your API keys"
+    echo "  1. Configure Goose with your preferred AI provider:"
+    echo "     goose configure"
+    echo "     # This will set up your model and API keys"
     echo
-    echo "  2. Run your first autonomous project:"
+    echo "  2. (Optional) Copy and configure additional environment variables:"
+    echo "     cp $INSTALL_DIR/.env.template $INSTALL_DIR/.env"
+    echo "     # Edit .env with MCP server API keys if needed"
+    echo
+    echo "  3. Run your first autonomous project:"
     echo "     cd $INSTALL_DIR"
     echo "     goose run --recipe recipes/autonomous-project-team.yaml \\"
     echo "       --params project_goal=\"Your project description here\""
     echo
-    echo "  3. Check the documentation:"
+    echo "  4. Check the documentation:"
     echo "     cat $INSTALL_DIR/README.md"
     echo "     cat $INSTALL_DIR/docs/provider-setup-guide.md"
+    echo
+    echo "  5. To update to the latest version, re-run this installer:"
+    echo "     bash <(curl -fsSL https://raw.githubusercontent.com/pc-style/goose/main/install-autonomous-team.sh)"
     echo
     print_status "Happy autonomous coding! 🚀"
 }
