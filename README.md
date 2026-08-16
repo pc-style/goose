@@ -1,5 +1,5 @@
 > [!WARNING]
-> **Archived imported upstream derivative/reference — do not use this repository for new work.**
+> **Archive pending — do not use this repository for new work.** This imported upstream derivative/reference is scheduled for archive once repository administration permission is available.
 >
 > This repository was imported from the canonical [aaif-goose/goose](https://github.com/aaif-goose/goose) project (formerly `block/goose`), with shared upstream base commit [`b4ab7743297b02cf3d20e10c67a3fe8fd148afb`](https://github.com/aaif-goose/goose/commit/b4ab7743297b02cf3d20e10c67a3fe8fd148afb). The upstream project is licensed under Apache-2.0. This repository's current tree has no standalone `LICENSE` or `NOTICE` file; the imported upstream history and any notices present in that history or in individual files are preserved.
 >
