@@ -1,3 +1,12 @@
+> [!WARNING]
+> **Archived imported upstream derivative/reference — do not use this repository for new work.**
+>
+> This repository was imported from the canonical [aaif-goose/goose](https://github.com/aaif-goose/goose) project (formerly `block/goose`), with shared upstream base commit [`b4ab7743297b02cf3d20e10c67a3fe8fd148afb`](https://github.com/aaif-goose/goose/commit/b4ab7743297b02cf3d20e10c67a3fe8fd148afb). The upstream project is licensed under Apache-2.0. This repository's current tree has no standalone `LICENSE` or `NOTICE` file; the imported upstream history and any notices present in that history or in individual files are preserved.
+>
+> **Maintained pc-style delta:** none. **Historical, unmaintained delta:** 14 commits added an Autonomous Project Team system and related installers, orchestration/subagent configuration, documentation, fixes, and cleanup; the last custom commit was 2025-08-05. There is no ongoing upstream sync, maintenance, or support here.
+>
+> Use [the canonical upstream](https://github.com/aaif-goose/goose) for current code, releases, issues, and security updates.
+
 # Autonomous Project Team System
 
 > **A revolutionary Goose-based system for fully autonomous project execution using specialized AI subagents**
